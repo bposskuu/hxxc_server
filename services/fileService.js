@@ -41,7 +41,7 @@ class FileService {
 
     renameFile(req, file, name) {
         const filePath = this.getFilePath(req, file)
-        const newFilePath = filePath.replace(filePath.split('//').pop(), name)
+        const newFilePath = filePath.replace(filePath.split('/').pop(), name)
         return new Promise((resolve, reject) => {
             try {
                 if (fs.existsSync(filePath)) {
@@ -58,9 +58,9 @@ class FileService {
     }
 
     archiveDir(req, file) {
-        const tempPath =  `${req.filePath}//temp//${file.user}`
+        const tempPath =  `${req.filePath}/temp/${file.user}`
         const filePath = this.getFilePath(req, file)
-        const archivePath = tempPath+`//`+file.name+'.zip'
+        const archivePath = tempPath+`/`+file.name+'.zip'
 
         return new Promise((resolve, reject) => {
             try {
@@ -82,7 +82,7 @@ class FileService {
     }
 
     getFilePath(req, file) {
-        return `${req.filePath}//${file.user}//${file.path}`
+        return `${req.filePath}/${file.user}/${file.path}`
     }
 }
 

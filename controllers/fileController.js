@@ -13,7 +13,7 @@ class FileController {
             const file = new File({name,type,parent, user: req.user.id, date: Date.now(), path: ''})
             const parentFile = await File.findOne({_id: parent})
 
-            file.path = `${parentFile ? parentFile.path+'//'+file.name : file.name}`
+            file.path = `${parentFile ? parentFile.path+'/'+file.name : file.name}`
             await fileService.createDir(req, file)
 
             if (parentFile) {
@@ -97,7 +97,7 @@ class FileController {
             await fileService.renameFile(req, file, name)
 
             file.name = name
-            file.path = `${parent ? parent.path+'//'+name : name}`
+            file.path = `${parent ? parent.path+'/'+name : name}`
 
             await file.save()
             return res.json(file)
@@ -117,7 +117,7 @@ class FileController {
             }
             user.usedSpace += file.size
 
-            const path = `${req.filePath}//${user._id}//${parent ? parent.path+'//' : ''}${file.name}`
+            const path = `${req.filePath}/${user._id}/${parent ? parent.path+'/' : ''}${file.name}`
 
             if (fs.existsSync(path)) {
                 return res.status(400).json({message: "File already exist"})
@@ -125,7 +125,7 @@ class FileController {
 
             file.mv(path)
 
-            const filePath = `${parent ? parent.path+'//' : ''}${file.name}`
+            const filePath = `${parent ? parent.path+'/' : ''}${file.name}`
 
             const type = file.name.split('.').pop()
             const dbFile = new File({
@@ -155,7 +155,7 @@ class FileController {
     async downloadFile(req,res) {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            const path = `${req.filePath}//${req.user.id}//${file.path}`
+            const path = `${req.filePath}/${req.user.id}/${file.path}`
 
             if (file.type === 'dir') {
                 let archivePath
@@ -180,7 +180,7 @@ class FileController {
     async removeArchive(req,res) {
         try {
             const file = await File.findOne({_id: req.query.id, user: req.user.id})
-            const archivePath = `${req.filePath}//temp//${req.user.id}//${file.name}.zip`
+            const archivePath = `${req.filePath}/temp/${req.user.id}/${file.name}.zip`
 
             if (file) {
 
@@ -269,12 +269,12 @@ class FileController {
             const avatarName = Uuid.v4() + '.png'
 
             if (user.avatar) {
-                fs.rmSync(req.staticPath + '//' + user.avatar)
+                fs.rmSync(req.staticPath + '/' + user.avatar)
             }
             if (!fs.existsSync(req.staticPath)) {
                 fs.mkdirSync(req.staticPath)
             }
-            file.mv(req.staticPath + '//' + avatarName)
+            file.mv(req.staticPath + '/' + avatarName)
             user.avatar = avatarName
             await user.save()
 
@@ -290,7 +290,7 @@ class FileController {
             const user = await User.findOne({_id: req.user.id})
 
             if (user.avatar) {
-                fs.rmSync(req.staticPath + '//' + user.avatar)
+                fs.rmSync(req.staticPath + '/' + user.avatar)
             }
 
             user.avatar = null
