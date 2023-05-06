@@ -1,5 +1,5 @@
 {
-  "serverPort" : "80",
+  "serverPort" : "5000",
   "dbUrl": "mongodb+srv://bposskuu:198548520@cloud.qacmnsu.mongodb.net/cloud?retryWrites=true&w=majority",
   "jwt-secret": "S9fpn7Fa2mi0vf3n2a3dQ3a3"
 }

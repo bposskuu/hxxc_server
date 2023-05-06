@@ -10,7 +10,7 @@ const filePath = require("./middleware/filepath.middleware");
 const path = require('path')
 
 const app = express()
-const PORT = config.get("serverPort")
+const PORT = process.env.PORT || config.get("serverPort")
 
 app.use(express.json())
 app.use(cors)
